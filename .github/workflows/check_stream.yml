@@ -43,12 +43,12 @@ jobs:
           TELEGRAM_CHANNEL: ${{ secrets.TELEGRAM_CHANNEL }}
         run: |
           echo "::group::Starting monitor"
-          PYTHONPATH=${{ github.workspace }} python bot.py
-          echo "::endgroup::"
+          PYTHON=${{ github.workspace }} python bot.py
+          echo "::end group::"
 
       - name: Upload logs
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: monitor-logs-${{ github.run_id }}
           path: |
