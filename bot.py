@@ -3,8 +3,8 @@ import logging
 from datetime import datetime
 from telegram import Bot, InputMediaPhoto
 from telegram.constants import ParseMode
-from twitch.api import get_stream_status
-from twitch.stream_status import StreamStatusManager
+from api import get_stream_status
+from stream_status import StreamStatusManager
 
 # Конфигурация логирования
 logging.basicConfig(
