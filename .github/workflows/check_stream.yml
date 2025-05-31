@@ -11,7 +11,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Download previous status
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: stream-status
           path: .
@@ -34,7 +34,7 @@ jobs:
         run: python bot.py
 
       - name: Upload current status
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: stream-status
           path: last_status.json
