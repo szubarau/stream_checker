@@ -1,7 +1,6 @@
 from telegram import Bot
 from telegram.constants import ParseMode
-from twitch.api import get_stream_status
-from twitch.stream_status import StreamStatusManager
+from api import get_stream_status
 import os
 
 
