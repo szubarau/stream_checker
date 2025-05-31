@@ -2,6 +2,7 @@ import os
 import requests
 from requests.exceptions import RequestException
 from urllib.parse import quote
+from functools import lru_cache
 
 
 def _make_twitch_request(url, headers):
@@ -14,15 +15,32 @@ def _make_twitch_request(url, headers):
         raise Exception(f"Twitch API error: {str(e)}")
 
 
+@lru_cache(maxsize=1)
 def get_twitch_token():
-    """Получение OAuth-токена с кэшированием"""
+    """
+    Получение и кэширование OAuth-токена Twitch
+    Возвращает:
+        str: Access token или None при ошибке
+    """
     auth_url = "https://id.twitch.tv/oauth2/token"
     params = {
         "client_id": os.getenv("TWITCH_CLIENT_ID"),
         "client_secret": os.getenv("TWITCH_CLIENT_SECRET"),
         "grant_type": "client_credentials"
     }
-    return _make_twitch_request(auth_url, params={}, method="POST").get("access_token")
+
+    try:
+        response = requests.post(
+            auth_url,
+            params=params,
+            timeout=10
+        )
+        response.raise_for_status()
+        token_data = response.json()
+        return token_data.get('access_token')
+    except requests.exceptions.RequestException as e:
+        print(f"Ошибка получения токена: {str(e)}")
+        return None
 
 
 def get_streamer_id(login, headers):
