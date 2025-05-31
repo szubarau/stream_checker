@@ -37,3 +37,8 @@ def main():
 
     status_manager.save_status(current_status)
     print(f"Статус сохранен: {'online' if current_status else 'offline'}")
+
+    if __name__ == "__main__":
+        print("=== Старт проверки ===")
+        main()
+        print("=== Проверка завершена ===")
