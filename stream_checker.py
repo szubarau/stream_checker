@@ -2,19 +2,17 @@ import asyncio
 from stream_status import is_stream_live
 from bot import send_telegram_message
 
-PREVIOUS_STATUS = False
-
 
 async def main(client_id: str, client_secret: str, user_login: str, bot_token: str, chat_id: str):
-    global PREVIOUS_STATUS
+    previous_status = False
     while True:
         try:
             is_live = await is_stream_live(client_id, client_secret, user_login)
-            if is_live and not PREVIOUS_STATUS:
+            if is_live and not previous_status:
                 await send_telegram_message(bot_token, chat_id, f"🎥 Стрим на канале <b>{user_login}</b> начался!")
-                PREVIOUS_STATUS = True
+                previous_status = True
             elif not is_live:
-                PREVIOUS_STATUS = False
+                previous_status = False
         except Exception as e:
             print(f"[ERROR] {e}")
         await asyncio.sleep(60)
